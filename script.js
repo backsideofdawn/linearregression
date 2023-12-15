@@ -19,12 +19,14 @@ setInterval(render, 100);
 
 
 function render() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  ctx.strokeStyle = 'blue';
+  ctx.fillStyle = '#0f0f0f';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.strokeStyle = 'pink';
   ctx.lineWidth = 5
   ctx.lineCap = 'round';
   drawLineWithSlope(weight, bias);
 
+  ctx.fillStyle = 'lightblue';
   for (const point of dataset) {
     fillCenteredRect(point[0], point[1], 10, 10);
   }
@@ -33,8 +35,14 @@ function render() {
 
   
 
-  ctx.font = '20px sans-serif'
-  ctx.fillText(`Cost: ${networkCost}`, 10, 20);
+  ctx.fillStyle = 'black';
+  ctx.globalAlpha = 0.5;
+  ctx.fillRect(5, 5, 290, 40);
+  ctx.globalAlpha = 1;
+  ctx.font = '18px sans-serif';
+  ctx.fillStyle = 'white';
+  ctx.fillText(`Cost: ${networkCost.toFixed(5)}`, 10, 20);
+  ctx.fillText(`Weight: ${weight.toFixed(5)} Bias: ${bias.toFixed(5)}`, 10, 38);
   if (dataset.length > 0 && playing) {
     let regression = regress(weight, bias);
     weight = regression.w;
@@ -84,6 +92,7 @@ canvas.onclick = (event) => {
 function createButton(name, onclick) {
   const button = document.createElement('button');
   button.innerText = name;
+  button.setAttribute('class',"btn m-1 btn-outline-primary");
   button.onclick = onclick;
   document.body.appendChild(button);
 }
